@@ -20,7 +20,7 @@ void setup()
     frameRate(25);
     
     _displayWidth = 1360;
-    _displayHeight = 768; //<>//
+    _displayHeight = 768;
 
     port = new Serial(this, "COM4", 9600);
     size(100, 100); // window size (doesn't matter)
