@@ -5,40 +5,19 @@ import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GraphicsConfiguration;
 import processing.serial.*;
 
 Serial port;
 Robot robby;
-int _displayWidth;
-int _displayHeight;
 
 void setup()
 {
     frameRate(25);
-
-    int screenID = 0;
-    //GraphicsConfiguration[] graphicsConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getConfigurations();
-    GraphicsDevice screenDevices[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-    for (int i = 0; i < screenDevices.length; i++)
-    {
-        if (screenDevices[i].getDefaultConfiguration().getBounds().width == 1360)
-        {
-            screenID = i;
-            break;
-        }
-    }
-    println(screenID);
-    _displayWidth = screenDevices[screenID].getDefaultConfiguration().getBounds().width;
-    _displayHeight = screenDevices[screenID].getDefaultConfiguration().getBounds().height;
-
     port = new Serial(this, "COM4", 9600);
     size(100, 100); // window size (doesn't matter)
     try // standard Robot class error check
     {
-        robby = new Robot(screenDevices[screenID]);
+        robby = new Robot();
     }
     catch (AWTException e)
     {
@@ -50,21 +29,21 @@ void setup()
 void draw()
 {
     int pixelDivisor = 4; // adjust to tune performance
-    int sampleWidth = _displayWidth / pixelDivisor;
-    int sampleHeight = _displayHeight / pixelDivisor;
+    int sampleWidth = displayWidth / pixelDivisor;
+    int sampleHeight = displayHeight / pixelDivisor;
     int samplePixels = sampleWidth * sampleHeight;
 
     // get screenshot into object "screenshot" of class BufferedImage
-    BufferedImage screenshot = robby.createScreenCapture(new Rectangle(new Dimension(_displayWidth, _displayHeight)));
+    BufferedImage screenshot = robby.createScreenCapture(new Rectangle(new Dimension(displayWidth, displayHeight)));
 
     float r = 0;
     float g = 0;
     float b = 0;
     int i = 0;
     int j = 0;
-    for (i = 0; i < _displayWidth; i += pixelDivisor)
+    for (i = 0; i < displayWidth; i += pixelDivisor)
     {
-        for (j = 0; j < _displayHeight; j += pixelDivisor)
+        for (j = 0; j < displayHeight; j += pixelDivisor)
         {
             // sample each pixel
             int pixel = screenshot.getRGB(i, j); // ARGB variable with 32 int bytes where sets of 8 bytes are: Alpha, Red, Green, Blue
