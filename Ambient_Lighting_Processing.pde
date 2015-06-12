@@ -57,10 +57,16 @@ void draw()
     g /= samplePixels;
     b /= samplePixels;
 
+    // compensate for differences in LED color intensity
+    float r_, g_, b_;
+    r_ = r;
+    g_ = g * 0.30;
+    b_ = b * 0.27;
+
     port.write(0xFF); // marker for synchronization
-    port.write((byte) (r));
-    port.write((byte) (g));
-    port.write((byte) (b));
+    port.write((byte) (r_));
+    port.write((byte) (g_));
+    port.write((byte) (b_));
     delay(10); // delay for safety
 
     background(r, g, b); // make window background average color
