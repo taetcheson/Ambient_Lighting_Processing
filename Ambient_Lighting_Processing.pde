@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import processing.serial.*; //library for serial communication
 
-
 Serial port; //creates object "port" of serial class
 Robot robby; //creates object "robby" of robot class
 
@@ -33,7 +32,7 @@ void draw()
     int sampleWidth = displayWidth / pixelDivisor;
     int sampleHeight = displayHeight / pixelDivisor;
     int samplePixels = sampleWidth * sampleHeight;
-    
+
     // get screenshot into object "screenshot" of class BufferedImage
     BufferedImage screenshot = robby.createScreenCapture(new Rectangle(new Dimension(displayWidth, displayHeight)));
 
@@ -44,7 +43,7 @@ void draw()
     int j = 0;
     for (i = 0; i < displayWidth; i += pixelDivisor)
     {
-        for (j = 0; j < displayHeight ; j += pixelDivisor)
+        for (j = 0; j < displayHeight; j += pixelDivisor)
         {
             // sample each pixel
             int pixel = screenshot.getRGB(i, j); // ARGB variable with 32 int bytes where sets of 8 bytes are: Alpha, Red, Green, Blue
@@ -54,6 +53,9 @@ void draw()
             b += (int)(0xFF & (pixel));
         }
     }
+    
+    // find average color
+    // TODO: use HSV color space for better results
     r /= samplePixels;
     g /= samplePixels;
     b /= samplePixels;
@@ -64,12 +66,14 @@ void draw()
     g_ = g * 0.30;
     b_ = b * 0.27;
 
+    // send color to Arduino
     port.write(0xFF); // marker for synchronization
     port.write((byte) (r_));
     port.write((byte) (g_));
     port.write((byte) (b_));
     delay(10); // delay for safety
-
-    background(r, g, b); // make window background average color
+    
+    // make window background average color (disable once done?)
+    //background(r, g, b);
 }
 
