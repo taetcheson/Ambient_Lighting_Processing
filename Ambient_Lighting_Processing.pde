@@ -18,27 +18,15 @@ int _displayHeight;
 void setup()
 {
     frameRate(25);
-
-    int screenID = 0;
-    //GraphicsConfiguration[] graphicsConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0].getConfigurations();
-    GraphicsDevice screenDevices[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-    for (int i = 0; i < screenDevices.length; i++)
-    {
-        if (screenDevices[i].getDefaultConfiguration().getBounds().width == 1360)
-        {
-            screenID = i;
-            break;
-        }
-    }
-    println(screenID);
-    _displayWidth = screenDevices[screenID].getDefaultConfiguration().getBounds().width;
-    _displayHeight = screenDevices[screenID].getDefaultConfiguration().getBounds().height;
+    
+    _displayWidth = 1360;
+    _displayHeight = 768; //<>//
 
     port = new Serial(this, "COM4", 9600);
     size(100, 100); // window size (doesn't matter)
     try // standard Robot class error check
     {
-        robby = new Robot(screenDevices[screenID]);
+        robby = new Robot();
     }
     catch (AWTException e)
     {
