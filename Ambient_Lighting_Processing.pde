@@ -29,7 +29,7 @@ void setup()
 
 void draw()
 {
-    int pixelDivisor = 2; // adjust to tune performance
+    int pixelDivisor = 4; // adjust to tune performance
     int sampleWidth = displayWidth / pixelDivisor;
     int sampleHeight = displayHeight / pixelDivisor;
     int samplePixels = sampleWidth * sampleHeight;
@@ -37,7 +37,6 @@ void draw()
     // get screenshot into object "screenshot" of class BufferedImage
     BufferedImage screenshot = robby.createScreenCapture(new Rectangle(new Dimension(displayWidth, displayHeight)));
 
-    int pixel; // ARGB variable with 32 int bytes where sets of 8 bytes are: Alpha, Red, Green, Blue
     float r = 0;
     float g = 0;
     float b = 0;
@@ -47,10 +46,12 @@ void draw()
     {
         for (j = 0; j < displayHeight ; j += pixelDivisor)
         {
-            pixel = screenshot.getRGB(i, j);
-            r += (int)(255 & (pixel >> 16));
-            g += (int)(255 & (pixel >> 8));
-            b += (int)(255 & (pixel));
+            // sample each pixel
+            int pixel = screenshot.getRGB(i, j); // ARGB variable with 32 int bytes where sets of 8 bytes are: Alpha, Red, Green, Blue
+            // shift and mask LSB
+            r += (int)(0xFF & (pixel >> 16));
+            g += (int)(0xFF & (pixel >> 8));
+            b += (int)(0xFF & (pixel));
         }
     }
     r /= samplePixels;
