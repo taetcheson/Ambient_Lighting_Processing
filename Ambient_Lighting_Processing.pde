@@ -1,21 +1,21 @@
 //Developed by Rajarshi Roy
-import java.awt.Robot; //java library that lets us take screenshots
+import java.awt.Robot; // Java library that lets us take screenshots
 import java.awt.AWTException;
 import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.Dimension;
-import processing.serial.*; //library for serial communication
+import processing.serial.*;
 
-Serial port; //creates object "port" of serial class
-Robot robby; //creates object "robby" of robot class
+Serial port;
+Robot robby;
 
 void setup()
 {
     frameRate(25);
-    port = new Serial(this, "COM4", 9600); //set baud rate
-    size(100, 100); //window size (doesn't matter)
-    try //standard Robot class error check
+    port = new Serial(this, "COM4", 9600);
+    size(100, 100); // window size (doesn't matter)
+    try // standard Robot class error check
     {
         robby = new Robot();
     }
